@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:5000/api/logs";
+// const API_URL = "http://localhost:5000/api/logs";
+ const API_URL="https://smart-log-system-2.onrender.com/api/logs";
 
 export const getLogs = async () => {
   const response = await fetch(API_URL);

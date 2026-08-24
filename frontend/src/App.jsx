@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import "./App.css";
 import { getLogs } from "./services/api";
 import StatsCards from "./components/StatsCards";
 import LogTable from "./components/LogTable";
 import LogDetails from "./components/LogDetails";
-
 
 function App() {
   const [logs, setLogs] = useState([]);
@@ -46,50 +46,86 @@ function App() {
   });
 
   if (loading) {
-    return <h2>Loading logs...</h2>;
+    return <div className="loading-state">Loading logs...</div>;
   }
 
   if (error) {
-    return <h2>Error: {error}</h2>;
+    return <div className="loading-state error-state">Error: {error}</div>;
   }
 
   return (
-    <div>
-      <h1>Smart Log Analyzer</h1>
+    <div className="app-shell">
+      <header className="topbar">
+        <div className="brand">
+          <div className="brand-mark">S</div>
+          <div>
+            <span className="brand-kicker">Monitoring</span>
+            <h2>Smart Log Analyzer</h2>
+          </div>
+        </div>
 
-      <StatsCards logs={logs} />
+        <div className="status-pill">
+          <span className="status-dot" />
+          Live monitoring
+        </div>
+      </header>
 
-      <input
-        type="text"
-        placeholder="Search logs..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <main className="dashboard">
+        <section className="hero-panel">
+          <div className="hero-copy">
+            <p className="eyebrow">Operations overview</p>
+            <h1>Discover risk before it becomes a problem.</h1>
+          </div>
 
-      <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-        <option value="all">All</option>
-        <option value="normal">Normal</option>
-        <option value="anomaly">Anomaly</option>
-        <option value="critical">Critical</option>
-      </select>
+          <div className="controls">
+            <label className="search-box">
+              <span className="search-icon">⌕</span>
+              <input
+                type="text"
+                placeholder="Search logs..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </label>
 
-      
-         
-      <LogTable
-  logs={filteredLogs}
-  onSelectLog={(log) => {
-    console.log("Selected log:", log);
-    setSelectedLog(log);
-  }}
-/>
-      
-     
+            <label className="select-box">
+              <span>Filter</span>
+              <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+                <option value="all">All</option>
+                <option value="normal">Normal</option>
+                <option value="anomaly">Anomaly</option>
+                <option value="critical">Critical</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <StatsCards logs={logs} />
+
+        <section className="table-panel">
+          <div className="panel-header">
+            <div>
+              <p className="eyebrow">Activity feed</p>
+              <h2>Recent system logs</h2>
+            </div>
+
+            <span className="table-badge">{filteredLogs.length} visible</span>
+          </div>
+
+          <LogTable
+            logs={filteredLogs}
+            onSelectLog={(log) => {
+              console.log("Selected log:", log);
+              setSelectedLog(log);
+            }}
+          />
+        </section>
+      </main>
 
       <LogDetails
-  log={selectedLog}
-  onClose={() => setSelectedLog(null)}
-/>
-
+        log={selectedLog}
+        onClose={() => setSelectedLog(null)}
+      />
     </div>
   );
 }

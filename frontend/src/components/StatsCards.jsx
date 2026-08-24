@@ -6,12 +6,21 @@ function StatsCards({ logs }) {
     (log) => log.severity === "CRITICAL"
   ).length;
 
+  const stats = [
+    { label: "Total Logs", value: total, tone: "total" },
+    { label: "Anomalies", value: anomalies, tone: "anomaly" },
+    { label: "Normal", value: normal, tone: "normal" },
+    { label: "Critical", value: critical, tone: "critical" },
+  ];
+
   return (
-    <div>
-      <p>Total Logs: {total}</p>
-      <p>Anomalies: {anomalies}</p>
-      <p>Normal: {normal}</p>
-      <p>Critical: {critical}</p>
+    <div className="stats-grid">
+      {stats.map(({ label, value, tone }) => (
+        <div key={label} className={`stat-card ${tone}`}>
+          <span className="stat-label">{label}</span>
+          <strong className="stat-value">{value}</strong>
+        </div>
+      ))}
     </div>
   );
 }
