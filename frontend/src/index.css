@@ -1,0 +1,158 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  padding: 30px;
+}
+
+h1 {
+  margin-bottom: 25px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  margin-top: 25px;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background: #222;
+  color: white;
+}
+
+tr:hover {
+  background: #f1f1f1;
+}
+
+.anomaly-row {
+  background: #ffe5e5;
+}
+
+.anomaly-row td:last-child {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
+
+input,
+select {
+  padding: 10px 12px;
+  margin-top: 20px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+input {
+  width: 280px;
+}
+
+select {
+  width: 130px;
+  background: white;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #333;
+}
+
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 650px;
+  max-width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+  color: #555;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.details-grid div {
+  padding: 12px;
+  background: #f5f7fa;
+  border-radius: 8px;
+}
+
+.details-grid span {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.details-grid strong {
+  display: block;
+}
+
+.detail-section {
+  margin-top: 20px;
+}
+
+.detail-section h3,
+.ai-section h3 {
+  margin-bottom: 8px;
+}
+
+.detail-section p {
+  background: #f5f7fa;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.ai-section {
+  margin-top: 20px;
+  padding: 15px;
+  background: #eef6ff;
+  border-radius: 8px;
+}
