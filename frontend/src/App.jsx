@@ -10,24 +10,48 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // for paging changes 
+           const [page, setPage] = useState(1);
+           const [totalPages, setTotalPages] = useState(1);
+
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [selectedLog, setSelectedLog] = useState(null);
 
-  useEffect(() => {
-    const fetchLogs = async () => {
-      try {
-        const data = await getLogs();
-        setLogs(data.logs);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+const [stats, setStats] = useState({
+  total: 0,
+  anomalies: 0,
+  normal: 0,
+  critical: 0,
+});
 
-    fetchLogs();
-  }, []);
+
+  useEffect(() => {
+  const fetchLogs = async () => {
+    try {
+      setLoading(true);
+
+      const data = await getLogs(page, 10);
+      console.log("API DATA:", data);
+
+      setLogs(data.logs);
+      setTotalPages(data.totalPages);
+
+      setStats({
+        total: data.total,
+        anomalies: data.anomalies,
+        normal: data.normal,
+        critical: data.critical,
+      });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchLogs();
+}, [page]);        // paging lagne ke baad [page]  warna [] tha
 
   const filteredLogs = logs.filter((log) => {
     const matchesSearch =
@@ -100,7 +124,8 @@ function App() {
           </div>
         </section>
 
-        <StatsCards logs={logs} />
+        {/* <StatsCards logs={logs} /> */}
+        <StatsCards stats={stats} />
 
         <section className="table-panel">
           <div className="panel-header">
@@ -118,7 +143,32 @@ function App() {
               console.log("Selected log:", log);
               setSelectedLog(log);
             }}
-          />
+          /> 
+    
+    
+         <div className="pagination">
+            <button
+                disabled={page === 1}
+                onClick={() => setPage(page - 1)}
+             >
+               Previous
+            </button>
+
+            <span>
+              Page {page} of {totalPages}
+            </span>
+
+           <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+           >
+            Next
+         </button>
+       </div>
+    
+    
+    
+    
         </section>
       </main>
 

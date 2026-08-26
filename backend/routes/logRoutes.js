@@ -6,20 +6,70 @@ const { explainAnomaly } = require("../services/aiService");
 const router = express.Router();
 
 
-// GET all logs
-router.get("/", async (req, res) => {
-  try {
-    const logs = await Log.find().sort({ timestamp: -1 });
+//! GET all logs
+// router.get("/", async (req, res) => {
+//   try {
+//     const logs = await Log.find().sort({ timestamp: -1 });
 
+//     res.json({
+//       count: logs.length,
+//       logs,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Failed to fetch logs",
+//     });
+//   }
+// });
+
+
+//!changes for paging in log limit - expalined in explain
+
+router.get("/",async(req,res)=>{
+  try{
+
+    const page =parseInt(req.query.page) || 1 ;
+    const limit = parseInt(req.query.limit) || 10 ;
+
+    const skip =(page-1)* limit;
+
+    const logs= await Log.find()
+       .sort({timestamp: -1})
+       .skip(skip)
+       .limit(limit);
+ 
+    
+    const total =await Log.countDocuments();
+
+    const anomalies = await Log.countDocuments({
+       isAnomaly: true,
+    });
+
+    const critical = await Log.countDocuments({
+       severity: "CRITICAL",
+    });
+
+    const normal = total - anomalies;
+    
     res.json({
-      count: logs.length,
-      logs,
+     count: logs.length,
+     total,
+     anomalies,
+     normal,
+     critical,
+     page,
+     limit,
+     totalPages: Math.ceil(total / limit),
+     logs,
     });
-  } catch (error) {
+
+  }catch{
+
     res.status(500).json({
-      message: "Failed to fetch logs",
+      message:"failed to fetch logs",
     });
-  }
+    }
+
 });
 
 
